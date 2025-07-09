@@ -6,36 +6,28 @@
 //
 
 import SwiftUI
+
 struct ContentView: View {
     @StateObject private var viewModel = JournalViewModel()
-    @State private var showNewEntry = false
     
     var body: some View {
-        NavigationView {
-            VStack {
-                if !viewModel.entries.isEmpty {
-                    SentimentTrendView(entries: viewModel.entries)
+        TabView {
+            JournalTab(viewModel: viewModel)
+                .tabItem {
+                    Label("Journal", systemImage: "book.closed")
                 }
-                
-                EntryListView(viewModel: viewModel)
-            }
-            .navigationTitle("Emotion Journal")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { showNewEntry = true }) {
-                        Image(systemName: "plus")
-                    }
+            
+            SentimentTrendTab(viewModel: viewModel)
+                .tabItem {
+                    Label("Trends", systemImage: "chart.line.uptrend.xyaxis")
                 }
-            }
-            .sheet(isPresented: $showNewEntry) {
-                NewEntryView(viewModel: viewModel)
-            }
-            .onAppear {
-                viewModel.loadEntries()
-            }
+        }
+        .onAppear {
+            viewModel.loadEntries()
         }
     }
 }
+
 
 #Preview {
     ContentView()
