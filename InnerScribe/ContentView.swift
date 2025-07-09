@@ -8,14 +8,27 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var viewModel = JournalViewModel()
+    @State private var showNewEntry = false
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationView {
+            EntryListView(viewModel: viewModel)
+                .navigationTitle("Emotion Journal")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button(action: { showNewEntry = true }) {
+                            Image(systemName: "plus")
+                        }
+                    }
+                }
+                .sheet(isPresented: $showNewEntry) {
+                    NewEntryView(viewModel: viewModel)
+                }
         }
-        .padding()
+        .onAppear {
+            viewModel.loadEntries()
+        }
     }
 }
 
