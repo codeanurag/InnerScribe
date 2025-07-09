@@ -9,9 +9,12 @@
 import SwiftUI
 import Charts
 
+import SwiftUI
+import Charts
+
 struct SentimentTrendTab: View {
     @ObservedObject var viewModel: JournalViewModel
-    @State private var animateChart = false
+    @State private var entriesToShow: [JournalEntry] = []
 
     var sortedEntries: [JournalEntry] {
         viewModel.entries.sorted(by: { $0.date < $1.date })
@@ -34,13 +37,20 @@ struct SentimentTrendTab: View {
                         .padding(.leading)
 
                     Chart {
-                        ForEach(sortedEntries) { entry in
-                            // SentimentLine(entry: entry, animate: animateChart)
+                        ForEach(entriesToShow) { entry in
+                            LineMark(
+                                x: .value("Date", entry.date),
+                                y: .value("Sentiment", entry.sentimentScore)
+                            )
+                            .interpolationMethod(.catmullRom)
+                            .foregroundStyle(color(for: entry.sentimentScore))
+                            .symbol(Circle())
                         }
                     }
                     .chartYScale(domain: -1.0...1.0)
                     .frame(height: 250)
                     .padding()
+                    .transition(.opacity)
                 }
 
                 Spacer()
@@ -48,9 +58,25 @@ struct SentimentTrendTab: View {
             .navigationTitle("Trends")
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                animateChart = true
+            withAnimation(.easeInOut(duration: 0.5)) {
+                entriesToShow = sortedEntries
+            }
+        }
+        .onChange(of: viewModel.entries) { _ in
+            withAnimation(.easeInOut(duration: 0.5)) {
+                entriesToShow = sortedEntries
             }
         }
     }
+
+    private func color(for score: Double) -> Color {
+        if score > 0.3 {
+            return .green
+        } else if score < -0.3 {
+            return .red
+        } else {
+            return .gray
+        }
+    }
 }
+

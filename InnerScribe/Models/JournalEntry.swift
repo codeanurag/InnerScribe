@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct JournalEntry: Identifiable, Codable {
+struct JournalEntry: Identifiable, Codable, Equatable {
     let id: UUID
     let date: Date
     let text: String
