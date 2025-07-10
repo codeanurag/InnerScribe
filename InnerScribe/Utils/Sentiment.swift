@@ -5,17 +5,20 @@
 //  Created by Anurag Pandit on 10/07/25.
 //
 
-enum Sentiment: String, CaseIterable, Codable {
-    case grateful
-    case lonely
-    case frustrated
-    case calm
-    case hopeful
-    case anxious
-    case proud
-    case nostalgic
-    case regretful
-    case giddy
+import Charts
+import SwiftUI
+
+enum Sentiment: String, CaseIterable, Codable, Plottable {
+    case grateful = "GRATEFUL"
+    case lonely = "LONELY"
+    case frustrated = "FRUSTRATED"
+    case calm = "CALM"
+    case hopeful = "HOPEFUL"
+    case anxious = "ANXIOUS"
+    case proud = "PROUD"
+    case nostalgic = "NOSTALGIC"
+    case regretful = "REGRETFUL"
+    case giddy = "GIDDY"
     
     init(score: Double) {
         switch score {
@@ -55,5 +58,20 @@ enum Sentiment: String, CaseIterable, Codable {
     
     var displayName: String {
         rawValue.capitalized
+    }
+    
+    var sentimentColor: Color {
+        switch self {
+        case .grateful, .proud, .giddy:
+            return .green
+        case .hopeful, .calm:
+            return .blue
+        case .anxious, .nostalgic:
+            return .gray
+        case .lonely, .regretful:
+            return .orange
+        case .frustrated:
+            return .red
+        }
     }
 }

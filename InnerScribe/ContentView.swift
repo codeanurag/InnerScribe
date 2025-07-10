@@ -12,6 +12,11 @@ struct ContentView: View {
     
     var body: some View {
         TabView {
+            ChartView(entries: viewModel.entries)
+                .tabItem {
+                    Label("Home", systemImage: "house")
+                }
+            
             JournalTab(viewModel: viewModel)
                 .tabItem {
                     Label("Journal", systemImage: "book.closed")
