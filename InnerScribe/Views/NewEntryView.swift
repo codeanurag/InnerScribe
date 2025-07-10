@@ -27,10 +27,12 @@ struct NewEntryView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        if !entryText.trimmingCharacters(in: .whitespaces).isEmpty {
-                            viewModel.addEntry(text: entryText)
-                            dismiss()
+                        guard !entryText.trimmingCharacters(in: .whitespaces)
+                            .isEmpty else {
+                            return dismiss()
                         }
+                        viewModel.addEntry(text: entryText)
+                        dismiss()
                     }
                 }
             }
