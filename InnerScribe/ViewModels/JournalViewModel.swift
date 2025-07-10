@@ -17,19 +17,23 @@ class JournalViewModel: ObservableObject {
         entries.insert(entry, at: 0)
         saveEntries()
     }
-
-    private func getFileURL() -> URL {
+}
+private
+extension JournalViewModel {
+    func getFileURL() -> URL {
         let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         return path.appendingPathComponent("entries.json")
     }
-
-    private func saveEntries() {
+    
+    func saveEntries() {
         let url = getFileURL()
         if let data = try? JSONEncoder().encode(entries) {
             try? data.write(to: url)
         }
     }
+}
 
+extension JournalViewModel {
     func loadEntries() {
         let url = getFileURL()
         if let data = try? Data(contentsOf: url),
