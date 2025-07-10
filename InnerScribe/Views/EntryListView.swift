@@ -21,7 +21,7 @@ struct EntryListView: View {
                     Text(entry.date.formatted(date: .abbreviated, time: .omitted))
                         .font(.caption)
                     Spacer()
-                    Text(entry.moodEmoji)
+                    Text(entry.moodEmoji.emoji)
                         .font(.largeTitle)
                 }
             }

@@ -13,12 +13,7 @@ struct JournalEntry: Identifiable, Codable, Equatable {
     let date: Date
     let text: String
     let sentimentScore: Double
-
-    var moodEmoji: String {
-        switch sentimentScore {
-        case let x where x > 0.3: return "😄"
-        case let x where x < -0.3: return "😞"
-        default: return "😐"
-        }
+    var moodEmoji: Sentiment {
+        Sentiment(score: sentimentScore)
     }
 }
