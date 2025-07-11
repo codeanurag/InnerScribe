@@ -62,7 +62,7 @@ struct SentimentTrendTab: View {
                 entriesToShow = sortedEntries
             }
         }
-        .onChange(of: viewModel.entries) { _ in
+        .onChange(of: viewModel.entries) {
             withAnimation(.easeInOut(duration: 0.5)) {
                 entriesToShow = sortedEntries
             }
