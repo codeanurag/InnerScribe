@@ -24,7 +24,11 @@ struct SentimentTrendView: View {
                         x: .value("Date", entry.date),
                         y: .value("Sentiment", entry.sentimentScore)
                     )
-                    .foregroundStyle(entry.sentimentScore > 0.3 ? .green : (entry.sentimentScore < -0.3 ? .red : .gray))
+                    .foregroundStyle(
+                        entry.sentimentScore > 0.3 ? .green : (
+                            entry.sentimentScore < -0.3 ? .red : .gray
+                        )
+                    )
                     .interpolationMethod(.catmullRom)
                 }
             }
