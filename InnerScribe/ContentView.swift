@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var viewModel = JournalViewModel()
+    @StateObject
+    private var viewModel = JournalViewModel()
     
     var body: some View {
         TabView {
@@ -31,9 +32,4 @@ struct ContentView: View {
             viewModel.loadEntries()
         }
     }
-}
-
-
-#Preview {
-    ContentView()
 }
