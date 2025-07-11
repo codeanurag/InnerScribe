@@ -9,7 +9,8 @@
 import SwiftUI
 
 struct EntryListView: View {
-    @ObservedObject var viewModel: JournalViewModel
+    @ObservedObject
+    var viewModel: JournalViewModel
 
     var body: some View {
         List(viewModel.entries) { entry in
@@ -18,7 +19,8 @@ struct EntryListView: View {
                     .lineLimit(2)
                     .font(.body)
                 HStack {
-                    Text(entry.date.formatted(date: .abbreviated, time: .omitted))
+                    Text(entry.date.formatted(date: .abbreviated,
+                                              time: .omitted))
                         .font(.caption)
                     Spacer()
                     Text(entry.moodEmoji.emoji)

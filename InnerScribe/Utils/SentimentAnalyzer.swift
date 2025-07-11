@@ -28,7 +28,5 @@ struct SentimentAnalyzer {
                 return false
             }
         return sentimentScore
-        // let (sentiment, _) = tagger.tag(at: text.startIndex, unit: .paragraph, scheme: .sentimentScore)
-        // return Double(sentiment?.rawValue ?? "0") ?? 0
     }
 }
