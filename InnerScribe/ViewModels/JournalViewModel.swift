@@ -8,6 +8,7 @@
 
 import Foundation
 
+final
 class JournalViewModel: ObservableObject {
     @Published var entries: [JournalEntry] = []
 
