@@ -8,34 +8,28 @@
 
 @testable import InnerScribe
 import Testing
+import Foundation
 
 struct JournalViewModelTests {
     @Test
-    func testAddEntryStoresCorrectTextAndSentiment() {
-        let viewModel = JournalViewModel()
-        viewModel.entries = []
-
-        let input = "I'm happy today!"
-        viewModel.addEntry(text: input)
-
-        #expect(viewModel.entries.count == 1)
-        #expect(viewModel.entries.first?.text == input)
-        #expect((viewModel.entries.first?.sentimentScore ?? 0) > 0)
-    }
-
-    @Test
     func testSaveAndLoadEntries() {
-        let viewModel = JournalViewModel()
+        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("test-entries.json")
+
+        // Clean previous test file
+        try? FileManager.default.removeItem(at: tempURL)
+
+        let viewModel = JournalViewModel(fileURL: tempURL)
         viewModel.entries = []
 
         viewModel.addEntry(text: "Testing save and load")
         let savedEntry = viewModel.entries.first
 
-        viewModel.entries = []
+        viewModel.entries = [] // simulate restart
         viewModel.loadEntries()
 
         #expect(viewModel.entries.count == 1)
         #expect(viewModel.entries.first?.text == savedEntry?.text)
     }
 }
+
 

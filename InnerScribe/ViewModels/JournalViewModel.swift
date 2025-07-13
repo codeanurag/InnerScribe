@@ -11,6 +11,16 @@ import Foundation
 final
 class JournalViewModel: ObservableObject {
     @Published var entries: [JournalEntry] = []
+    private var fileURL: URL
+    
+    init(fileURL: URL? = nil) {
+        if let fileURL {
+            self.fileURL = fileURL
+        } else {
+            let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            self.fileURL = path.appendingPathComponent("entries.json")
+        }
+    }
 
     func addEntry(text: String) {
         let score = SentimentAnalyzer.analyze(text: text)
@@ -30,17 +40,15 @@ extension JournalViewModel {
     }
     
     func saveEntries() {
-        let url = getFileURL()
         if let data = try? JSONEncoder().encode(entries) {
-            try? data.write(to: url)
+            try? data.write(to: fileURL)
         }
     }
 }
 
 extension JournalViewModel {
     func loadEntries() {
-        let url = getFileURL()
-        if let data = try? Data(contentsOf: url),
+        if let data = try? Data(contentsOf: fileURL),
            let decoded = try? JSONDecoder().decode([JournalEntry].self, from: data) {
             self.entries = decoded
         }
