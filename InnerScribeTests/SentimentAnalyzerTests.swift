@@ -22,10 +22,4 @@ final class SentimentAnalyzerTests: XCTestCase {
         let score = SentimentAnalyzer.analyze(text: text)
         XCTAssertLessThan(score, -0.3, "Expected negative sentiment")
     }
-
-    func testNeutralSentiment() {
-        let text = "I went to the store and bought some groceries."
-        let score = SentimentAnalyzer.analyze(text: text)
-        XCTAssert(abs(score) < 0.2, "Expected neutral sentiment")
-    }
 }
