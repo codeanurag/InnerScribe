@@ -6,37 +6,36 @@
 //
 
 
-import XCTest
 @testable import InnerScribe
+import Testing
 
-final class JournalViewModelTests: XCTestCase {
-
-    var viewModel: JournalViewModel!
-
-    override func setUp() {
-        super.setUp()
-        viewModel = JournalViewModel()
-        viewModel.entries = [] // Clear state
-    }
-
+struct JournalViewModelTests {
+    @Test
     func testAddEntryStoresCorrectTextAndSentiment() {
+        let viewModel = JournalViewModel()
+        viewModel.entries = []
+
         let input = "I'm happy today!"
         viewModel.addEntry(text: input)
-        let entry = viewModel.entries.first
 
-        XCTAssertNotNil(entry)
-        XCTAssertEqual(entry?.text, input)
-        XCTAssertGreaterThan(entry?.sentimentScore ?? 0, 0)
+        #expect(viewModel.entries.count == 1)
+        #expect(viewModel.entries.first?.text == input)
+        #expect((viewModel.entries.first?.sentimentScore ?? 0) > 0)
     }
 
+    @Test
     func testSaveAndLoadEntries() {
-        viewModel.addEntry(text: "Testing save and load")
+        let viewModel = JournalViewModel()
+        viewModel.entries = []
 
-        let savedEntries = viewModel.entries
-        viewModel.entries = [] // Clear manually
+        viewModel.addEntry(text: "Testing save and load")
+        let savedEntry = viewModel.entries.first
+
+        viewModel.entries = []
         viewModel.loadEntries()
 
-        XCTAssertEqual(viewModel.entries.count, savedEntries.count)
-        XCTAssertEqual(viewModel.entries.first?.text, savedEntries.first?.text)
+        #expect(viewModel.entries.count == 1)
+        #expect(viewModel.entries.first?.text == savedEntry?.text)
     }
 }
+

@@ -6,20 +6,29 @@
 //
 
 
-import XCTest
+import Testing
 @testable import InnerScribe
 
-final class SentimentAnalyzerTests: XCTestCase {
-
+struct SentimentAnalyzerTests {
+    @Test
     func testPositiveSentiment() {
         let text = "I'm feeling amazing and full of energy!"
         let score = SentimentAnalyzer.analyze(text: text)
-        XCTAssertGreaterThan(score, 0.3, "Expected positive sentiment")
+        #expect(score > 0.3)
     }
 
+    @Test
     func testNegativeSentiment() {
         let text = "This is terrible and I feel awful."
         let score = SentimentAnalyzer.analyze(text: text)
-        XCTAssertLessThan(score, -0.3, "Expected negative sentiment")
+        #expect(score < -0.3)
+    }
+
+    @Test
+    func testNeutralSentiment() {
+        let text = "I went to the store and bought some groceries."
+        let score = SentimentAnalyzer.analyze(text: text)
+        #expect(abs(score) < 0.2)
     }
 }
+
