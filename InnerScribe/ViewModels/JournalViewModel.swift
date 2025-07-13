@@ -11,46 +11,36 @@ import Foundation
 final
 class JournalViewModel: ObservableObject {
     @Published var entries: [JournalEntry] = []
-    private var fileURL: URL
+    private let storage: StorageProvider
     
-    init(fileURL: URL? = nil) {
-        if let fileURL {
-            self.fileURL = fileURL
-        } else {
-            let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-            self.fileURL = path.appendingPathComponent("entries.json")
-        }
+    init(storage: StorageProvider = FileStorageProvider()) {
+        self.storage = storage
     }
-
+}
+extension JournalViewModel {
     func addEntry(text: String) {
         let score = SentimentAnalyzer.analyze(text: text)
-        let entry = JournalEntry(id: UUID(),
-                                 date: Date(),
-                                 text: text,
-                                 sentimentScore: score)
+        let entry = JournalEntry(id: UUID(), date: Date(), text: text, sentimentScore: score)
         entries.insert(entry, at: 0)
         saveEntries()
+    }
+
+    func loadEntries() {
+        do {
+            entries = try storage.load()
+        } catch {
+            print("❌ Failed to load entries: \(error.localizedDescription)")
+            entries = []
+        }
     }
 }
 private
 extension JournalViewModel {
-    func getFileURL() -> URL {
-        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        return path.appendingPathComponent("entries.json")
-    }
-    
     func saveEntries() {
-        if let data = try? JSONEncoder().encode(entries) {
-            try? data.write(to: fileURL)
-        }
-    }
-}
-
-extension JournalViewModel {
-    func loadEntries() {
-        if let data = try? Data(contentsOf: fileURL),
-           let decoded = try? JSONDecoder().decode([JournalEntry].self, from: data) {
-            self.entries = decoded
+        do {
+            try storage.save(entries)
+        } catch {
+            print("❌ Failed to save entries: \(error.localizedDescription)")
         }
     }
 }
