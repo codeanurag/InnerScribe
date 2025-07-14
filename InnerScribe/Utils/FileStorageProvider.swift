@@ -14,7 +14,13 @@ struct FileStorageProvider: StorageProvider {
         if let fileURL {
             self.fileURL = fileURL
         } else {
-            let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let path = FileManager
+                .default
+                .urls(
+                    for: .documentDirectory,
+                    in: .userDomainMask
+                )
+                .first!
             self.fileURL = path.appendingPathComponent("entries.json")
         }
     }
@@ -26,6 +32,8 @@ struct FileStorageProvider: StorageProvider {
 
     func load() throws -> [JournalEntry] {
         let data = try Data(contentsOf: fileURL)
-        return try JSONDecoder().decode([JournalEntry].self, from: data)
+        return try JSONDecoder().decode(
+            [JournalEntry].self, from: data
+        )
     }
 }
