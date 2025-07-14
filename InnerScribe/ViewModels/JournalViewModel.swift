@@ -29,7 +29,6 @@ extension JournalViewModel {
         do {
             entries = try storage.load()
         } catch {
-            print("❌ Failed to load entries: \(error.localizedDescription)")
             entries = []
         }
     }
@@ -40,7 +39,6 @@ extension JournalViewModel {
         do {
             try storage.save(entries)
         } catch {
-            print("❌ Failed to save entries: \(error.localizedDescription)")
         }
     }
 }
