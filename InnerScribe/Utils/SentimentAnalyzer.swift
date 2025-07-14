@@ -17,14 +17,13 @@ struct SentimentAnalyzer {
             in: text.startIndex..<text.endIndex,
             unit: .paragraph,
             scheme: .sentimentScore,
-            options: []) { sentimentTag, _ in
+            options: []
+        ) { sentimentTag, _ in
                 if let sentimentString = sentimentTag?.rawValue,
                    let score = Double(sentimentString) {
                     sentimentScore = score
                     return true
                 }
-                
-                
                 return false
             }
         return sentimentScore

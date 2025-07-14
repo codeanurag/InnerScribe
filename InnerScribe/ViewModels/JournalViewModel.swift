@@ -20,7 +20,10 @@ class JournalViewModel: ObservableObject {
 extension JournalViewModel {
     func addEntry(text: String) {
         let score = SentimentAnalyzer.analyze(text: text)
-        let entry = JournalEntry(id: UUID(), date: Date(), text: text, sentimentScore: score)
+        let entry = JournalEntry(id: UUID(),
+                                 date: Date(),
+                                 text: text,
+                                 sentimentScore: score)
         entries.insert(entry, at: 0)
         saveEntries()
     }

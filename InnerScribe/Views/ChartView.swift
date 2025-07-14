@@ -13,12 +13,15 @@ struct ChartView: View {
     var entries: [JournalEntry]
     
     init(entries: [JournalEntry]) {
-        self.entries = entries.sorted { $0.sentimentScore < $1.sentimentScore }
+        self.entries = entries.sorted {
+            $0.sentimentScore < $1.sentimentScore
+        }
     }
     
     var body: some View {
         Chart(entries) { entry in
-            SectorMark(angle: .value("Type", 1), innerRadius: .ratio(0.75))
+            SectorMark(angle: .value("Type", 1),
+                       innerRadius: .ratio(0.75))
                 .foregroundStyle(by: .value("sentiment",
                                             entry.moodEmoji))
         }
